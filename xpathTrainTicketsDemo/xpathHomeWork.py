@@ -16,42 +16,45 @@ import pandas
 # 8    9   镇江南站   9  11:35  11:37   2分  1088公里
 # 9   10   苏州北站  10  12:13  12:15   2分  1237公里
 # 10  11  上海虹桥站  11  12:40  12:40   --  1318公里
-#===========================================================================
+# ===========================================================================
 URL = "http://huoche.8684.cn/h_G101"
 # 添加请求头以防万一
 headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
 }
+
 requestResult = requests.get(url=URL, headers=headers)
 
 htmlText = requestResult.text
 
 webHtml = etree.HTML(htmlText)
 
+item = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]')
+
 # 获取头部
-head = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/thead/tr/th/text()')
+head = item[0].xpath('//table/thead/tr/th/text()')
 
 # 获取站次
-stationNum = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[1]/text()')
+stationNum = item[0].xpath('//table/tbody/tr/td[1]/text()')
 
 # 获取站点
-stationName = webHtml.xpath(
-    '/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td/a[@class="site_name"]/text()')
+stationName = item[0].xpath(
+    '//table/tbody/tr/td/a[@class="site_name"]/text()')
 
 # 获取日期
-date = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[1]/text()')
+date = item[0].xpath('//table/tbody/tr/td[1]/text()')
 
 # 获取到达时间
-arriveTime = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[4]/text()')
+arriveTime = item[0].xpath('//table/tbody/tr/td[4]/text()')
 
 # 离开时间
-leaveTime = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[5]/text()')
+leaveTime = item[0].xpath('//table/tbody/tr/td[5]/text()')
 
 # 停留时间
-remainTime = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[6]/text()')
+remainTime = item[0].xpath('//table/tbody/tr/td[6]/text()')
 
 # 里程
-mileage = webHtml.xpath('/html/body/div[5]/div[3]/div[1]/div[1]/table/tbody/tr/td[7]/text()')
+mileage = item[0].xpath('//table/tbody/tr/td[7]/text()')
 
 data = {
     head[0]: pandas.Series(stationNum),
@@ -64,5 +67,7 @@ data = {
 }
 
 resultForm = pandas.DataFrame(data)
+
+resultForm.to_excel("火车出发时刻表.xlsx")  # 保存成excel
 
 print(resultForm)
