@@ -15,7 +15,7 @@ htmlText = requests.get(url=URL, headers=headers).text
 
 tree = etree.HTML(htmlText)
 
-trains = tree.xpath('/html/body/div[5]/div[2]/div[1]/div[7]/div[2]/a/text()')  # 获取所有高铁组班号
+trains = tree.xpath('/html/body/div[5]/div[2]/div[1]/div[@class="blocklist mt20"]/div[2]/a/text()')  # 获取所有高铁组班号
 
 for train in trains:  # 获取当日所有高铁班车行程
     try:
