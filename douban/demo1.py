@@ -10,6 +10,7 @@ def insertElement(list, temp):
     for item in temp:
         list.append(item)
 
+
 # 豆瓣电影top250
 headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
@@ -52,4 +53,4 @@ data = {
 
 frame = pd.DataFrame(data)
 
-frame.to_excel("豆瓣迪电影TOP250.xlsx")
+frame.to_excel(r'F:\\爬虫实验\\豆瓣爬虫试验\\豆瓣迪电影TOP250.xlsx')

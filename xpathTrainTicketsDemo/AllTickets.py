@@ -4,7 +4,6 @@ import time
 from lxml import etree
 import requests
 import pandas as pd
-
 URL = "https://huoche.8684.cn/sitemap"
 # 添加请求头以防万一
 headers = {
